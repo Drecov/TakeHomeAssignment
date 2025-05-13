@@ -1,5 +1,5 @@
 <?php
 
-class AccountController extends Account {
-    
+class AccountController {
+
 }
