@@ -2,6 +2,10 @@
 
 class RestService {
     public function __construct() {
+        $this->autoload();
+    }
+
+    private function autoload() {
         spl_autoload_register(function ($class) {
             
             $paths =   [__DIR__ . '/../controllers/' . $class . '.php',
@@ -25,4 +29,8 @@ class RestService {
 
 
     }
+
+    private static $MAPPING = [
+        
+    ];
 }
