@@ -31,6 +31,15 @@ class RestService {
 
         $controllerInstance = new $controller;
         $response = $controllerInstance->$metodo($params);
+        
+        if(!$response) {
+            $response = [
+                'code' => '400',
+                'load' => [
+                    'message' => 'Bad Request...'
+                ]
+            ];
+        }
 
         $this->enviarResposta($response);
     }

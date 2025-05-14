@@ -9,7 +9,6 @@ spl_autoload_register(function ($class) {
 
     foreach ($paths as $path) {
         if(file_exists($path)) {
-            print "> Autoload $path.<br>";
             require_once $path;
         } 
     }
