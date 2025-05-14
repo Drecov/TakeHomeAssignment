@@ -13,7 +13,8 @@ class AccountController {
             return ['code' => 404, 'load'=> 0];
         }
 
-        return ['code' => 200, 'load'=> ['message' => 'OK']];
+        $balance = $account->getBalance();
+        return ['code' => 200, 'load'=> $balance];
     }
     
     public function processEvent($params): void {
