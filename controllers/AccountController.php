@@ -44,14 +44,14 @@ class AccountController {
         if(!$account || !($account instanceof Account)) {
             $account = new Account($accNumber, $amount);
             DatabaseService::insertAccount($account);
-            return ['code' => 201, 'load'=> ['destination' => ['id'=>$accNumber, 'balance'=>$amount]]];
+            return ['code' => 201, 'load'=> "{\"destination\": {\"id\":\"$accNumber\", \"balance\":$amount}}"];
 
         } else {
             $balance = $account->getBalance() + $amount;
             $account->setBalance($balance);
             $result = DatabaseService::updateAccount($account);
             if($result) {
-                return ['code' => 201, 'load'=> ['destination' => ['id'=>$accNumber, 'balance'=>$balance]]];
+                return ['code' => 201, 'load'=> "{\"destination\": {\"id\":\"$accNumber\", \"balance\":$balance}}"];
             }
         }
         return null;

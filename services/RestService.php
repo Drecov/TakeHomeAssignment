@@ -47,7 +47,7 @@ class RestService {
     private function enviarResposta($response) {
         header("Content-Type: text/plain");
         http_response_code($response['code']);
-        echo json_encode($response['load']);
+        echo $response['load'];
         exit;
     }
 
