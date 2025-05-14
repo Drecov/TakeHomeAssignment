@@ -8,7 +8,7 @@ class AccountController {
         }
 
         $accId = $params['account_id'];
-        $account = RuntimeMemoryService::findAccountByAccountNumber($accId);
+        $account = DatabaseService::selectAccount($accId);
 
         if(!$account || !($account instanceof Account)) {
             return ['code' => 404, 'load'=> 0];
