@@ -6,15 +6,15 @@ class AccountController {
         if(!isset($params['account_id']) || !$params['account_id']) {
             return false;
         }
+
         $accId = $params['account_id'];
         $account = RuntimeMemoryService::findAccountByAccountNumber($accId);
 
-        if(!$account) {
+        if(!$account || !($account instanceof Account)) {
             return ['code' => 404, 'load'=> 0];
+        } else {
+            return ['code' => 200, 'load'=> $account->getBalance()];
         }
-
-        $balance = $account->getBalance();
-        return ['code' => 200, 'load'=> $balance];
     }
     
     public function processEvent($params): void {
