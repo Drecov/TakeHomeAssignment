@@ -15,6 +15,17 @@ class DatabaseService {
         }
     }
 
+    public function resetAccountDatabase() {
+        self::initPdo();
+        $query = "DELETE FROM account WHERE true;";
+        $ret = self::$pdo->exec($query);
+        if($ret) {
+            return ['code' => 200, 'load'=> 'OK'];
+        } else {
+            return ['code' => 200, 'load'=> 'CLEAN'];;
+        }
+    }
+
     public static function insertAccount(Account $data) {
         self::initPdo();
         $query = "INSERT INTO account (id, acc_number, balance) VALUES (:id, :acc_number, :balance);";
@@ -42,9 +53,15 @@ class DatabaseService {
         self::initPdo();
         $query = "SELECT * FROM account WHERE acc_number = :acc_number LIMIT 1;";
         $stmt = self::$pdo->prepare($query);
-        $ret = $stmt->execute([
+        $retQuery = $stmt->execute([
             ":acc_number"=> $acc_number
         ]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        if($retQuery) {
+            $ret = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($ret) {
+                return new Account($ret['acc_number'], $ret['balance']);
+            }
+        }
+        return false;
     }
 }

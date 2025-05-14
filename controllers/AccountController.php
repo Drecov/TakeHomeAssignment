@@ -39,7 +39,7 @@ class AccountController {
         $accNumber  = (int) $params['destination'];
         $amount     = (float) $params['amount'];
 
-        $account = RuntimeMemoryService::findAccountByAccountNumber($accNumber);
+        $account = DatabaseService::selectAccount($accNumber);
 
         if(!$account || !($account instanceof Account)) {
             $account = new Account($accNumber, $amount);
@@ -49,7 +49,7 @@ class AccountController {
         } else {
             $balance = $account->getBalance() + $amount;
             $account->setBalance($balance);
-            $result = RuntimeMemoryService::updateAccountStorage($account);
+            $result = DatabaseService::updateAccount($account);
             if($result) {
                 return ['code' => 201, 'load'=> ['destination' => ['id'=>$accNumber, 'balance'=>$balance]]];
             }

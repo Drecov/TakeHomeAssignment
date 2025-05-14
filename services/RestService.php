@@ -53,11 +53,11 @@ class RestService {
 
     private static $mapping = [
         "GET" => [
-            "balance" => ["controller"    => "AccountController",     "method" => "getBalance"]
+            "balance" => ["controller"    => "AccountController",   "method" => "getBalance"]
         ],
         "POST" => [
-            "reset"   => ["controller"    => "RuntimeMemoryService",  "method" => "resetMemory"],
-            "event"   => ["controller"    => "AccountController",     "method" => "processEvent"]
+            "reset"   => ["controller"    => "DatabaseService",     "method" => "resetAccountDatabase"],
+            "event"   => ["controller"    => "AccountController",   "method" => "processEvent"]
         ]
     ];
 }
