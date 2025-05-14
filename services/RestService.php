@@ -45,19 +45,19 @@ class RestService {
     }
 
     private function enviarResposta($response) {
+        header("Content-Type: text/plain");
         http_response_code($response['code']);
-        header('Content-Type: application/json');
         echo json_encode($response['load']);
         exit;
     }
 
     private static $mapping = [
         "GET" => [
-            "balance" => ["controller" => "AccountController", "method" => "getBalance"]
+            "balance" => ["controller"    => "AccountController",     "method" => "getBalance"]
         ],
         "POST" => [
-            "reset" => ["controller" => "RuntimeMemoryService", "method" => "resetMemory"],
-            "event" => ["controller" => "AccountController", "method" => "processEvent"]
+            "reset"   => ["controller"    => "RuntimeMemoryService",  "method" => "resetMemory"],
+            "event"   => ["controller"    => "AccountController",     "method" => "processEvent"]
         ]
     ];
 }
