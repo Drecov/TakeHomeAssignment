@@ -25,8 +25,25 @@ class RuntimeMemoryService {
         self::verificarSessaoAtiva();
         return $_SESSION['accountStorage'];
     }
+
+
     public function addAccountStorage(Account $account) {
         self::verificarSessaoAtiva();
         $_SESSION['accountStorage'][] = $account;
+    }
+
+    public function resetMemory($params) {
+        $this->setAccountStorage([]);
+    }
+
+    public function findAccountByAccountNumber($accountNumber) {
+        if(isset($_SESSION['accountStorage'])) {
+            foreach($_SESSION['accountStorage'] as $account) {
+                if($account['accNumber'] == $accountNumber) {
+                    return $account;
+                }
+            }
+        }
+        return null;
     }
 }
