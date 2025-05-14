@@ -17,7 +17,48 @@ class AccountController {
         }
     }
     
-    public function processEvent($params): void {
-
+    public function processEvent($params) {
+        if(isset($params['type'])) {
+            switch($params['type']) {
+                case 'deposit':
+                    return $this->processDeposit($params);
+                case 'withdraw':
+                    return $this->processWithdraw($params);
+                case 'transfer':
+                    return $this->processTransfer($params);
+                default:
+                    return null;
+            }
+        }
     }
+
+    private function processDeposit($params) {
+        if(!isset($params['destination']) || !isset($params['amount'])) {
+            return null;
+        }
+        $accNumber  = (int) $params['destination'];
+        $amount     = (float) $params['amount'];
+
+        $account = RuntimeMemoryService::findAccountByAccountNumber($accNumber);
+
+        if(!$account || !($account instanceof Account)) {
+            $account = new Account($accNumber, $amount);
+            RuntimeMemoryService::addAccountStorage($account);
+            return ['code' => 201, 'load'=> ['destination' => ['id'=>$accNumber, 'balance'=>$amount]]];
+
+        } else {
+            $balance = $account->getBalance() + $amount;
+            $account->setBalance($balance);
+            $result = RuntimeMemoryService::updateAccountStorage($account);
+            if($result) {
+                return ['code' => 201, 'load'=> ['destination' => ['id'=>$accNumber, 'balance'=>$balance]]];
+            }
+        }
+        return null;
+    }
+
+    private function processWithdraw($params) {}
+
+    private function processTransfer($params) {}
+
 }

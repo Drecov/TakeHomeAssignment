@@ -33,6 +33,7 @@ class RuntimeMemoryService {
     public static function resetMemory($params=null) {
         self::verificarSessaoAtiva();
         self::setAccountStorage([]);
+        return ['code' => 200, 'load'=> 'OK'];
     }
 
     public static function findAccountByAccountNumber($accountNumber) {
@@ -44,4 +45,19 @@ class RuntimeMemoryService {
         
         return $resultado[0] ?? null;
     }
+
+    public static function updateAccountStorage(Account $accountAtualizado) {
+    self::verificarSessaoAtiva();
+    $accountArray = self::getAccountStorage();
+    $accNumber = $accountAtualizado->getAccNumber();
+
+    foreach ($accountArray as $index => $account) {
+        if ($account instanceof Account && $account->getAccNumber() === $accNumber) {
+            $accountArray[$index] = $accountAtualizado;
+            self::setAccountStorage($accountArray);
+            return true;
+        }
+    }
+    return false;
+}
 }

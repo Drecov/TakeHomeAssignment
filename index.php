@@ -5,7 +5,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'au
 $initialStorage = new Account(101010, 100);
 
 RuntimeMemoryService::resetMemory();
-RuntimeMemoryService::addAccountStorage($initialStorage);
+//RuntimeMemoryService::addAccountStorage($initialStorage);
 
 $restService    = new RestService();
 $restService->processaRequest();
