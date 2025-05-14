@@ -9,4 +9,7 @@ class RuntimeMemory {
     public function getAccountStorage() {
         return self::$accountStorage;
     }
+    public function addAccountStorage(Account $account) {
+        self::$accountStorage[] = $account;
+    }
 }

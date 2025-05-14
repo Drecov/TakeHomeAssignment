@@ -30,7 +30,13 @@ class RestService {
 
     }
 
-    private static $MAPPING = [
-        
+    private static $mapping = [
+        'GET' => [
+            'balance' => ['controller' => 'AccountController', 'method' => 'balance']
+        ],
+        'POST' => [
+            'reset' => ['controller' => 'RuntimeMemoryController', 'method' => 'reset'],
+            'event' => ['controller' => 'AccountController', 'method' => 'event']
+        ]
     ];
 }
