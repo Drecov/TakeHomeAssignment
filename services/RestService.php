@@ -4,7 +4,8 @@ class RestService {
     public function processaRequest() {
         $requestType = $_SERVER["REQUEST_METHOD"];
         $uriCompleta = $_SERVER["REQUEST_URI"];
-        $uriPartes = array_values(array_filter(explode('/', $uriCompleta)));
+        $uriCaminho = parse_url($uriCompleta, PHP_URL_PATH);
+        $uriPartes = array_values(array_filter(explode('/', $uriCaminho)));
         $endpoint = $uriPartes[0];
 
         if($requestType == "GET") {
@@ -17,20 +18,28 @@ class RestService {
         $metodo = self::$mapping[$requestType][$endpoint]["method"];
 
         if(!$controller || !$metodo) {
-            http_response_code(500);
-            print ">>> Erro ao processar request. Método $metodo não existe para a classe $controller.<<<\n";
+            http_response_code(400);
+            print "<br>>>> Erro ao processar request. Método $metodo não existe para a classe $controller.<<<";
             return;
         }
 
         if(!method_exists($controller, $metodo)) {
-            http_response_code(500);
-            print ">>> Erro ao processar request. Método $metodo não existe para a classe $controller.<<<\n";
+            http_response_code(400);
+            print "<br>>>> Erro ao processar request. Método $metodo não existe para a classe $controller.<<<\n";
             return;
         }
 
         $controllerInstance = new $controller;
-        $controllerInstance->$metodo($params);
+        $response = $controllerInstance->$metodo($params);
 
+        $this->enviarResposta($response);
+    }
+
+    private function enviarResposta($response) {
+        http_response_code($response['code']);
+        header('Content-Type: application/json');
+        echo json_encode($response['load']);
+        exit;
     }
 
     private static $mapping = [
