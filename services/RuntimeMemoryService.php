@@ -47,17 +47,17 @@ class RuntimeMemoryService {
     }
 
     public static function updateAccountStorage(Account $accountAtualizado) {
-    self::verificarSessaoAtiva();
-    $accountArray = self::getAccountStorage();
-    $accNumber = $accountAtualizado->getAccNumber();
+        self::verificarSessaoAtiva();
+        $accountArray = self::getAccountStorage();
+        $accNumber = $accountAtualizado->getAccNumber();
 
-    foreach ($accountArray as $index => $account) {
-        if ($account instanceof Account && $account->getAccNumber() === $accNumber) {
-            $accountArray[$index] = $accountAtualizado;
-            self::setAccountStorage($accountArray);
-            return true;
+        foreach ($accountArray as $index => $account) {
+            if ($account instanceof Account && $account->getAccNumber() === $accNumber) {
+                $accountArray[$index] = $accountAtualizado;
+                self::setAccountStorage($accountArray);
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 }

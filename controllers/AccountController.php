@@ -43,7 +43,7 @@ class AccountController {
 
         if(!$account || !($account instanceof Account)) {
             $account = new Account($accNumber, $amount);
-            RuntimeMemoryService::addAccountStorage($account);
+            DatabaseService::insertAccount($account);
             return ['code' => 201, 'load'=> ['destination' => ['id'=>$accNumber, 'balance'=>$amount]]];
 
         } else {
