@@ -16,3 +16,11 @@ Essa camada é composta pelos controladores e seriços. Os controladores possuem
 
 --- UTILITÁRIOS ---
 A pasta utils é referente aos utilitários do sistema, como o autoload das classes do sistema e as migrations de banco de dados. A migration Initial Load contém o SQL de criação da tabela 'account' do banco de dados MySQL utilizado pelo DatabaseService. As migrations são rodadas manualmente através do script runMigrationsScript.php.
+
+--- ENDPOINTS ---
+Os endpoints esperados são:
+/reset (POST): Apaga todos os registros da tabela account do banco de dados;
+/event (POST): Cria uma solicitação de evento de depósito, saque ou transferência de valores de uma conta;
+/balance (GET): Retorna o saldo de uma conta.
+
+Quando uma solicitação é enviada com endpoint não esperado, retorna-se código 400 - Bad Request.
