@@ -19,13 +19,13 @@ class RestService {
 
         if(!$controller || !$metodo) {
             http_response_code(400);
-            print "<br>>>> Erro ao processar request. Método $metodo não existe para a classe $controller.<<<";
+            echo ">>> Erro ao processar request. Endpoint $endpoint não encontrado. <<<";
             return;
         }
 
         if(!method_exists($controller, $metodo)) {
             http_response_code(400);
-            print "<br>>>> Erro ao processar request. Método $metodo não existe para a classe $controller.<<<\n";
+            echo ">>> Erro ao processar request. Endpoint $endpoint não encontrado. <<<";
             return;
         }
 
@@ -35,7 +35,7 @@ class RestService {
         if(!$response) {
             $response = [
                 'code' => '400',
-                'load' => 'Bad Request...'
+                'load' => 'Bad Request'
                 ];
         }
 
