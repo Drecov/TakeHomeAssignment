@@ -15,6 +15,27 @@ class DatabaseService {
         }
     }
 
+    public static function runMigrations() {
+        self::initPdo();
+
+        $migrationsDir = __DIR__ .  DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'migrations';
+
+        if (!is_dir($migrationsDir)) {
+            print"Diretório de migrations não encontrado: $migrationsDir";
+            return false;
+        }
+
+        $files = glob($migrationsDir . DIRECTORY_SEPARATOR . '*.sql');
+        sort($files);
+
+        foreach ($files as $file) {
+            $sql = file_get_contents($file);
+            if (trim($sql)) {
+                self::$pdo->exec($sql);
+            }
+        }
+    }
+
     public function resetAccountDatabase() {
         self::initPdo();
         $query = "DELETE FROM account WHERE true;";
