@@ -35,10 +35,8 @@ class RestService {
         if(!$response) {
             $response = [
                 'code' => '400',
-                'load' => [
-                    'message' => 'Bad Request...'
-                ]
-            ];
+                'load' => 'Bad Request...'
+                ];
         }
 
         $this->enviarResposta($response);

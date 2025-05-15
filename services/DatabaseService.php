@@ -18,12 +18,8 @@ class DatabaseService {
     public function resetAccountDatabase() {
         self::initPdo();
         $query = "DELETE FROM account WHERE true;";
-        $ret = self::$pdo->exec($query);
-        if($ret) {
-            return ['code' => 200, 'load'=> 'OK'];
-        } else {
-            return ['code' => 200, 'load'=> 'CLEAN'];;
-        }
+        self::$pdo->exec($query);
+        return ['code' => 200, 'load'=> 'OK'];
     }
 
     public static function insertAccount(Account $data) {
