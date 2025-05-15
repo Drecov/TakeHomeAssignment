@@ -44,14 +44,14 @@ class AccountController {
         if(!$account || !($account instanceof Account)) {
             $account = new Account($accNumber, $amount);
             DatabaseService::insertAccount($account);
-            return ['code' => 201, 'load'=> "{\"destination\": {\"id\":\"$accNumber\", \"balance\":$amount}}"];
+            return ['code' => 201, 'load'=> "{\"destination\": {\"id\":\"$accNumber\", \"balance\":$amount}}", 'balance' => $amount];
 
         } else {
             $balance = $account->getBalance() + $amount;
             $account->setBalance($balance);
             $result = DatabaseService::updateAccount($account);
             if($result) {
-                return ['code' => 201, 'load'=> "{\"destination\": {\"id\":\"$accNumber\", \"balance\":$balance}}"];
+                return ['code' => 201, 'load'=> "{\"destination\": {\"id\":\"$accNumber\", \"balance\":$balance}}", 'balance' => $balance];
             }
         }
         return false;
@@ -73,7 +73,7 @@ class AccountController {
         $account->setBalance($balance);
         $result = DatabaseService::updateAccount($account);
         if($result) {
-            return ['code' => 201, 'load'=> "{\"origin\": {\"id\":\"$accNumber\", \"balance\":$balance}}"];
+            return ['code' => 201, 'load'=> "{\"origin\": {\"id\":\"$accNumber\", \"balance\":$balance}}", 'balance' => $balance];
         }
         return false;
     }
@@ -90,13 +90,22 @@ class AccountController {
         $origin         = DatabaseService::selectAccount($accOrigin);
         $destination    = DatabaseService::selectAccount($accDestination);
 
-        if(!($origin && $destination)) {
-            return ['code'=> 404, ''=> 0];
+        if(!$origin) {
+            return ['code'=> 404, 'load'=> 0];
         }
 
         $retOrigin      = $this->processWithdraw(['origin' => $accOrigin, 'amount' => $amount]);
         $retDestination = $this->processDeposit( ['destination' => $accDestination, 'amount' => $amount]);
 
+        if(!isset($retOrigin['balance']) || !isset($retDestination['balance'])) {
+            return false;
+        } else {
+            $originBalance = $retOrigin['balance'];
+            $destinationBalance = $retDestination['balance'];
+        }
+
+        return ['code' => 201, 'load'=> "{\"origin\": {\"id\":\"$accOrigin\", \"balance\":$originBalance}, 
+        \"destination\": {\"id\":\"$accDestination\", \"balance\":$destinationBalance}}"];
     }
 
 }
