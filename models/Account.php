@@ -1,5 +1,6 @@
 <?php
 
+//Modelo do Account com Id, numero da conta e saldo.
 class Account {
     private string $id;
     private float $balance;

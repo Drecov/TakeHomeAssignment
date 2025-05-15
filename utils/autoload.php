@@ -1,5 +1,5 @@
 <?php
-
+//Classe de autoload de todas as classes do sistema.
 spl_autoload_register(function ($class) {
     
     $paths =   [__DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "controllers" . DIRECTORY_SEPARATOR . $class . ".php",

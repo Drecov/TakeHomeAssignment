@@ -2,6 +2,7 @@
 
 class AccountController {
 
+    //Retorna o saldo de uma conta.
     public function getBalance($params) {
         if(!isset($params['account_id']) || !$params['account_id']) {
             return false;
@@ -17,6 +18,7 @@ class AccountController {
         }
     }
     
+    //Distribui o request de /event para as funções de processamento de saque, transferência ou depósito.
     public function processEvent($params) {
         if(isset($params['type'])) {
             switch($params['type']) {
@@ -32,6 +34,7 @@ class AccountController {
         }
     }
 
+    //Processa depósitos. Cria uma nova conta caso o depósito seja numa conta que não existe no banco de dados.
     private function processDeposit($params) {
         if(!isset($params['destination']) || !isset($params['amount'])) {
             return false;
@@ -57,6 +60,7 @@ class AccountController {
         return false;
     }
 
+    //Processa saque. Retorna erro caso a conta não exista.
     private function processWithdraw($params) {
         if(!isset($params['origin']) || !isset($params['amount'])) {
             return false;
@@ -78,6 +82,7 @@ class AccountController {
         return false;
     }
 
+    //Processa tansferência. Faz um saque e um depósito de duas contas distintas.
     private function processTransfer($params) {
         if(!isset($params['origin']) || !isset($params['destination']) || !isset($params['amount'])) {
             return false;

@@ -1,5 +1,6 @@
 <?php
 
+//Classe de conexão com banco de dados. Todas as manipulações do DB são feitas por esta classe.
 class DatabaseService {
     private const HOST = "localhost";
     private const PORT = 3306;
@@ -8,6 +9,7 @@ class DatabaseService {
     private const DATABASE = "takehomeassignment";
     private static $pdo;
 
+    //Verifica se há um PDO criado, e cria caso não.
     private static function initPdo() {
         if (!self::$pdo) {
             self::$pdo = new PDO("mysql:host=" . self::HOST . ";port=" . self::PORT . ";dbname=" . self::DATABASE,
@@ -15,6 +17,7 @@ class DatabaseService {
         }
     }
 
+    //Método para rodar todas as migrations da pasta \util\migrations.
     public static function runMigrations() {
         self::initPdo();
 
@@ -39,6 +42,7 @@ class DatabaseService {
         }
     }
 
+    //Apaga todos os registros da tabela account do banco de dados.
     public function resetAccountDatabase() {
         self::initPdo();
         $query = "DELETE FROM account WHERE true;";
@@ -46,6 +50,7 @@ class DatabaseService {
         return ['code' => 200, 'load'=> 'OK'];
     }
 
+    //Insere uma nova conta no DB.
     public static function insertAccount(Account $data) {
         self::initPdo();
         $query = "INSERT INTO account (id, acc_number, balance) VALUES (:id, :acc_number, :balance);";
@@ -58,6 +63,7 @@ class DatabaseService {
         return $ret;
     }
 
+    //Atualiza o saldo de conta existente no DB.
     public static function updateAccount(Account $data) {
         self::initPdo();
         $query = "UPDATE account set balance=:balance WHERE acc_number = :acc_number;";
@@ -69,6 +75,7 @@ class DatabaseService {
         return $ret;
     }
 
+    //Seleciona uma conta no DB, a partir do número da conta.
     public static function selectAccount(int $acc_number) {
         self::initPdo();
         $query = "SELECT * FROM account WHERE acc_number = :acc_number LIMIT 1;";

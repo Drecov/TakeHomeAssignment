@@ -1,4 +1,5 @@
 <?php
+//Ponto de entrada do sistema.
 error_reporting(E_ERROR);
 ini_set('display_errors', 0);
 

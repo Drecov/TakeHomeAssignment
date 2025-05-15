@@ -1,6 +1,9 @@
 <?php
 
+//Classe para processar todos os requests que chegam à API.
 class RestService {
+
+    //Processa o request, direcionando-o para o método mapeado.
     public function processaRequest() {
         $requestType = $_SERVER["REQUEST_METHOD"];
         $uriCompleta = $_SERVER["REQUEST_URI"];
@@ -42,6 +45,7 @@ class RestService {
         $this->enviarResposta($response);
     }
 
+    //Envia a resposta ao servidor.
     private function enviarResposta($response) {
         header("Content-Type: text/plain");
         http_response_code($response['code']);
@@ -49,6 +53,7 @@ class RestService {
         exit;
     }
 
+    //Faz o mapeamento dos endpoits para os métodos corretos do sistema.
     private static $mapping = [
         "GET" => [
             "balance" => ["controller"    => "AccountController",   "method" => "getBalance"]
