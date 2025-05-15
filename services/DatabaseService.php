@@ -30,8 +30,11 @@ class DatabaseService {
 
         foreach ($files as $file) {
             $sql = file_get_contents($file);
+            $basename = basename($file);
             if (trim($sql)) {
+                print "> Executando Migration $basename ...\n";
                 self::$pdo->exec($sql);
+                print "> Migration $basename executada.\n";
             }
         }
     }
