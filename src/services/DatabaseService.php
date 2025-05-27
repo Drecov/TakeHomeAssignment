@@ -2,11 +2,11 @@
 
 //Classe de conexão com banco de dados. Todas as manipulações do DB são feitas por esta classe.
 class DatabaseService {
-    private const HOST = "localhost";
+    private const HOST = "mysql";
     private const PORT = 3306;
     private const USER = "root";
-    private const PASSWORD = "";
-    private const DATABASE = "takehomeassignment";
+    private const PASSWORD = "root";
+    private const DATABASE = "ebanx";
     private static $pdo;
 
     //Verifica se há um PDO criado, e cria caso não.
